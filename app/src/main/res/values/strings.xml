@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Twitter Trends</string>
+
+
+
+    <string name="Action.ShowTweet.Logout">Log Out</string>
+
+
+</resources>
