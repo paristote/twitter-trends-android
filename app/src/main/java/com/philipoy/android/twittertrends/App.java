@@ -2,6 +2,7 @@ package com.philipoy.android.twittertrends;
 
 import android.app.Application;
 
+import com.crashlytics.android.Crashlytics;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 
@@ -17,7 +18,7 @@ public class App extends Application {
         super.onCreate();
 
         TwitterAuthConfig authConfig = new TwitterAuthConfig(Constants.TWITTER_KEY, Constants.TWITTER_SECRET);
-        Fabric.with(this, new Twitter(authConfig));
+        Fabric.with(this, new Twitter(authConfig), new Crashlytics());
     }
 
     public static class Constants {
