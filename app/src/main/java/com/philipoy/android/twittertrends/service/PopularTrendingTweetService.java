@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
+import android.util.Log;
 
 import com.philipoy.android.twittertrends.BuildConfig;
 import com.philipoy.android.twittertrends.ExtendedTwitterApiClient;
@@ -50,10 +51,10 @@ public class PopularTrendingTweetService extends IntentService {
                 STEP 2 : Get the Where On Earth ID of the current location
             */
             long woeid;
-//            if (BuildConfig.DEBUG) {
-//                Logger.d(LOG_TAG, "*** Faking San Francisco location");
-//                woeid = getLocationWOEID(37.781157, -122.400612831116);
-//            } else
+            if (BuildConfig.DEBUG) {
+                Logger.d(LOG_TAG, "*** Faking San Francisco location");
+                woeid = getLocationWOEID(37.781157, -122.400612831116);
+            } else
                 woeid = getLocationWOEID(currentLocation.getLatitude(), currentLocation.getLongitude());
             /*
                 STEP 3 : Get the most popular trend for this location
@@ -112,7 +113,7 @@ public class PopularTrendingTweetService extends IntentService {
         List<com.philipoy.android.twittertrends.model.Location> locations = trendsClient.getTrendsService().closest((long) latitude, (long) longitude);
         if (locations != null && !locations.isEmpty()) {
             com.philipoy.android.twittertrends.model.Location loc = locations.get(0);
-            Logger.d(LOG_TAG, "*** DONE WOEID: " + loc.woeid);
+            Logger.d(LOG_TAG, "*** DONE WOEID: " + loc.woeid + " ("+loc.name+", "+loc.country+")");
             return loc.woeid;
         } else {
             throw new TweetServiceException("Could not get the WOEID from Twitter's Trends service");
@@ -134,7 +135,7 @@ public class PopularTrendingTweetService extends IntentService {
         List<TrendsResult> results = trendsClient.getTrendsService().place(woeid);
         if (results != null && !results.isEmpty()) {
             List<Trend> trends = new ArrayList<>(results.get(0).trends);
-            if (trends != null && !trends.isEmpty()) {
+            if (!trends.isEmpty()) {
                 // Order results by tweet volume desc
                 Collections.sort(trends, Collections.reverseOrder());
                 Trend popularTrend = trends.get(0);

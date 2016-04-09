@@ -59,10 +59,10 @@ public class ShowTweetActivity extends AppCompatActivity {
     private void setUpTweetServiceAlarm() {
         // TODO : Only create the alarm if it does not already exist
         Intent getTweetIntent = new Intent(this, PopularTrendingTweetService.class);
-        PendingIntent alarmIntent = PendingIntent.getService(this, App.Constants.COLLECT_TWEET_CODE, getTweetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent alarmIntent = PendingIntent.getService(this, App.Constants.COLLECT_TWEET_CODE, getTweetIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Calendar cal = Calendar.getInstance();
-        alarm.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, cal.getTimeInMillis(), AlarmManager.INTERVAL_HOUR, alarmIntent);
+        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), AlarmManager.INTERVAL_HOUR, alarmIntent);
     }
 
     /**
